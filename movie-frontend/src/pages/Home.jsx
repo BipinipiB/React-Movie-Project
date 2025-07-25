@@ -26,7 +26,7 @@ function Home() {
         <div className="movies-grid">
             {/* using .map function which is going to iterate over all of the values inside our array */}
             {/* every single value inside a movie object above will be passed into "<Moviecard>"" function */}
-            {/* Key component is important when you are doing things in bulk so react knows which component to update */}
+            {/* Key component is important when you are doing things in bulk so react knows which component to update yo yo */}
             {movies.map((movie) => (
                 <MovieCard movie={movie} key={movie.id} />
             ))}
