@@ -1,14 +1,15 @@
 
 import { Routes,Route } from 'react-router-dom';
-import './App.css'
+import './css/App.css'
 import MovieCard from './components/MovieCard'
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import NavBar from './components/NavBar';
+import { MovieProvider } from './contexts/MovieContext';
 
 function App() {
   return (
-    <div>
+    <MovieProvider>
     {/* adding navbar to all pages */}
       <NavBar/>
       <main className="main-content">
@@ -19,7 +20,7 @@ function App() {
           <Route path="/favorites" element={<Favorites/>}/>
         </Routes>
       </main>
-    </div>
+    </MovieProvider>
   );
 }
 
