@@ -7,6 +7,7 @@ import Favorites from './pages/Favorites';
 import NavBar from './components/NavBar';
 import { MovieProvider } from './contexts/MovieContext';
 import Register from './pages/Register';
+import LoginForm from './pages/LoginForm';
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="/home" element={<Home/>}/>
           <Route path="/favorites" element={<Favorites/>}/>
           <Route path="/register" element={<Register/>}/>
+          {/* <Route path="/login" element={<Login/>}/> */}
+          
         </Routes>
       </main>
     </MovieProvider>
