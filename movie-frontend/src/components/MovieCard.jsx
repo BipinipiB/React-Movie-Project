@@ -19,7 +19,8 @@ function MovieCard({movie}){
     
     return <div className="movie-card"> 
         <div className="movie-poster">
-            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title}/>
+        {console.log(movie.posterPath)}
+            <img src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title}/>
             <div className="movie-overlay">
                 {/* //if we are favorited add the active(red) class else non  */}
                 <button className={`favorite-btn ${favorite ? "active" : ""}`} onClick = {onFavoriteClicked}>

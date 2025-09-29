@@ -30,11 +30,13 @@ function Home() {
     useEffect(() => {
         const loadPopularMovies = async () => {
             try{
+                 //console.log("gettiing  movies response:")
                 const popularMovies = await getPopularMovies ();
+                //console.log("Popular movies response:", popularMovies);
                 setMovies(popularMovies)
             }catch(err){ 
                 setError("Failed to load movies...");
-                console.log(err);
+                //console.log(err);
             }
             //note its a good/common practise when you use and API call is to setup two sets of variabltes
             // one to store the "loading state" (loading data) 
@@ -96,11 +98,19 @@ function Home() {
                 {/* using .map function which is going to iterate over all of the values inside our array */}
                 {/* every single value inside a movie object above will be passed into "<Moviecard>"" function */}
                 {/* Key component is important when you are doing things in bulk so react knows which component to update yo yo */}
-                {movies.map((movie) => (
+                {/* {movies.map((movie) => (
                     //render component <Moviecard> only if searchquery matches any movie in the list
                 // movie.title.toLowerCase().startsWith(searchQuery) && 
                         <MovieCard movie={movie} key={movie.id} />
-                ))}
+                ))} */}
+
+                {movies && movies.length > 0 ? (
+                    movies.map(movie => (
+                        <MovieCard key={movie.id} movie={movie} />
+                ))
+                ) : ( <p>No movies found.</p>   )
+                }
+
             </div>
         }
        

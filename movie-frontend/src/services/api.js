@@ -1,9 +1,9 @@
 // const API_KEY = "7042d23e1ea632d0967991d3199ed38f";
 // const BASE_URL ="https://api.themoviedb.org/3";
 
-const BASE_URL = "https://localhost:7018/api/movieproxy"
+const BASE_URL = "https://localhost:7205/api/movieproxy"
 
-const AUTH_URL = "https://localhost:7018/api/Auth"
+//const AUTH_URL = "https://localhost:7205/api/Auth"
 
 
 
@@ -14,7 +14,7 @@ export const getPopularMovies = async () => {
     throw new Error("Failed to fetch popular movies");
   }
   const data = await response.json();
-  return data.results; // or just `return data` if your backend returns the array directly
+  return data; // or just `return data` if your backend returns the array directly
 };
 
 //returns searched movies
@@ -28,17 +28,47 @@ export const searchMovies = async (query) => {
 //Register Users
 export const RegisterUser = async (formData) =>{
 
-  const response =  await fetch(`${AUTH_URL}/register`, {
+//console.log(`helloo ${formData.username}`);
+  const response =  await fetch(`${BASE_URL}/register`, {
     method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: formData.username,
-        email: formData.email,
-        password: formData.password
+        Username: formData.username,
+        Email: formData.email,
+        Password: formData.password
         })
   });
   const result =  await response.json();
   return result;
 }
+
+//Login User
+export const LoginUser = async (formData) => {
+  const response = await fetch(`${BASE_URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      identifier: formData.email,
+      password: formData.password })
+
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    
+    return { code: response.status, message: errorData?.message || "Login failed" };
+
+  }
+
+  return {
+    code: 200,
+    token : result.token,
+    username:formData.email || result.username
+  };
+
+};
