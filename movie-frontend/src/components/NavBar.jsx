@@ -1,30 +1,10 @@
-import { Link} from "react-router-dom";
-import '../css/Navbar.css'
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../css/Navbar.css";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 function NavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-  
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("username");
-    if (token !=null){
-      setIsLoggedIn(true);
-      setUsername(user);
-    } else {
-      setIsLoggedIn(false);
-      setUsername("");
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    setIsLoggedIn(false);
-  };
+  const { isLoggedIn, email, logout } = useContext(AuthContext);
 
   return (
     <nav className="navbar">
@@ -44,8 +24,8 @@ function NavBar() {
         )}
         {isLoggedIn && (
           <>
-            <span className="nav-link">{username}</span>
-            <button className="nav-link" onClick={handleLogout}>Logout</button>
+            <span className="nav-username">{email}</span>
+            <button className="nav-link" onClick={logout}>Logout</button>
           </>
         )}
       </div>

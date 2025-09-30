@@ -68,7 +68,7 @@ export const LoginUser = async (formData) => {
   return {
     code: 200,
     token : result.token,
-    username:formData.email || result.username
+    email:formData.email || result.username
   };
 
 };

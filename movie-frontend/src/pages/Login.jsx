@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import '../css/Login.css';
 import { LoginUser } from '../services/api';
-import { Navigate, useNavigate } from 'react-router-dom'; //
+import { Navigate, useNavigate } from 'react-router-dom';
+import { AuthContext } from "../contexts/AuthContext";
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
         setFormData(prev => ({
@@ -35,9 +37,11 @@ function Login() {
            
             //store token and username after successful login
             localStorage.setItem('token', result.token);
+            console.log("Set Item Email:",result.email);
             localStorage.setItem('email',result.email);
             //setAuthChanged(prev => !prev);
             alert('Login successful!');
+            login(result.token, result.email); // updates NavBar instantly
             navigate('/home');
         }else 
         {
