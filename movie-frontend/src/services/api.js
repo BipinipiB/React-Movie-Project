@@ -1,6 +1,8 @@
 // const API_KEY = "7042d23e1ea632d0967991d3199ed38f";
 // const BASE_URL ="https://api.themoviedb.org/3";
 
+import { use } from "react";
+
 const BASE_URL = "https://localhost:7205/api/movieproxy"
 
 //const AUTH_URL = "https://localhost:7205/api/Auth"
@@ -27,8 +29,6 @@ export const searchMovies = async (query) => {
 
 //Register Users
 export const RegisterUser = async (formData) =>{
-
-//console.log(`helloo ${formData.username}`);
   const response =  await fetch(`${BASE_URL}/register`, {
     method: 'POST',
       headers: {
@@ -70,5 +70,57 @@ export const LoginUser = async (formData) => {
     token : result.token,
     email:formData.email || result.username
   };
+
+};
+
+
+export const addFavorite = async (MovieId, token) => {
+
+  if(!token) 
+  {
+    return { code: 401, message: "No authorization token" };
+  }
+
+  const response = await fetch(`${BASE_URL}/favorites`, {
+
+  method:"POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  },
+  body: JSON.stringify({ MovieId })
+  });
+  const body = await response.text()
+    .then(text => text ? JSON.parse(text) : null)
+    .catch(() => null); 
+
+  if (!response.ok) {
+    return { code: response.status, message: body?.message || "Failed to add favorite" };
+  }
+  return { code: 200, data: body };
+};
+
+export const getFavoriteMovies = async (token) => {
+
+  if(!token) 
+  {
+    return { code: 401, message: "No authorization token" };
+  }
+
+  const response = await fetch(`${BASE_URL}/userfavoritemovies`, {
+
+  method:"GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  }
+  });
+  const body = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    return { code: response.status, message: body?.message || "Failed to fetch favorites" };
+  }
+
+  return { code: 200, data: body };
 
 };

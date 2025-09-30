@@ -2,19 +2,41 @@
 //This is our movie card component
 import '../css/MovieCard.css'
 import { useMovieContext } from '../contexts/MovieContext'
+import { AuthContext } from '../contexts/AuthContext';
+import { addFavorite } from '../services/api';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function MovieCard({movie}){
    
     // this line gives access to all values like isFavorite,addToFavorites etc
-    const {favorites,isFavorite, addToFavorites, removeFromFavorites} = useMovieContext(); //useMovieContext is from MovieContext.jsx
+    const {favorites,isFavorite, addToFavorites, removeFromFavorites} = useMovieContext(); 
     const favorite = isFavorite(movie.id);
+    const { isLoggedIn, token } = useContext(AuthContext);
+    const [saving, setSaving] = useState(false);
+    const navigate = useNavigate();
 
+    async function onFavoriteClicked(e) {
+        e.preventDefault();
+        if (!isLoggedIn) { 
+            navigate("/login");  // ✅ works now
+            return;
+        }
 
-    function onFavoriteClicked (e){
-       e.preventDefault();
-       if(favorite) removeFromFavorites(movie.id)
-        else addToFavorites(movie)
+        // optimistic UI update
+        setSaving(true);
+        const res = await addFavorite(movie.movieId, token);
+        setSaving(false);
+
+        if (res.code === 200) {
+            console.log("Saved to favorites");
+        } else {
+            if (res.code === 401) {
+                navigate("/login");
+            }
+            alert(res.message || "Could not save favorite");
+        }
     }
     
     return <div className="movie-card"> 

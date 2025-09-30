@@ -2,11 +2,30 @@
 import '../css/Favorites.css'
 import { useMovieContext } from '../contexts/MovieContext'
 import MovieCard from '../components/MovieCard'
+import { AuthContext } from '../contexts/AuthContext';
+import { getFavoriteMovies } from '../services/api';
+import { useContext, useEffect } from 'react';
 
 
 function Favorites(){
       
-   const {favorites} = useMovieContext();
+    const { token } = useContext(AuthContext); // get user token
+    const { favorites, setFavorites } = useMovieContext(); // access favorites state
+
+   // Fetch favorites only when component mounts
+    useEffect(() => {
+        const fetchFavorites = async () => {
+            if (!token) return; // user not logged in
+            const res = await getFavoriteMovies(token);
+            if (res.code == 200) {
+               setFavorites(res.data);
+            } else{
+                  console.error("Failed to fetch favorites:", res.message);
+            }
+        };
+
+      fetchFavorites();
+    }, [token, setFavorites]);
 
    if(favorites){
       return ( 

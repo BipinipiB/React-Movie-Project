@@ -26,9 +26,6 @@ function Login() {
         return;
         }
         setError('');
-
-        console.log('Login user:', formData);
-
         const result = await LoginUser(formData);
 
         //login successful??
