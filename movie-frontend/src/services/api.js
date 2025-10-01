@@ -1,7 +1,4 @@
-// const API_KEY = "7042d23e1ea632d0967991d3199ed38f";
-// const BASE_URL ="https://api.themoviedb.org/3";
 
-import { use } from "react";
 
 const BASE_URL = "https://localhost:7205/api/movieproxy"
 
@@ -73,14 +70,14 @@ export const LoginUser = async (formData) => {
 
 };
 
-
+//Add movies to favorites
 export const addFavorite = async (MovieId, token) => {
 
   if(!token) 
   {
     return { code: 401, message: "No authorization token" };
   }
-
+  console.log("Adding favorite tokeb ID:", token);
   const response = await fetch(`${BASE_URL}/favorites`, {
 
   method:"POST",
